@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="car-user" />
+	<!-- 强制检查服务 -->
+	<dubbo:consumer check="false" timeout="5000" />
+	<!-- 使用redis中心暴露发现服务地址 没成功 -->
+	<!--<dubbo:registry address="redis://127.0.0.1:6379" check="false" /> -->
+
+	<!-- 使用multicast广播注册中心暴露发现服务地址 -->
+	<!-- <dubbo:registry address="multicast://224.5.6.7:1234?unicast=false" 
+		check="false" /> -->
+
+	<!-- zookeeper注册中心 -->
+	<dubbo:registry protocol="zookeeper" address="192.168.88.129:2181"
+		check="false" />
+
+	<!--通讯配置 -->
+	<dubbo:protocol name="dubbo" dispatcher="all"
+		threadpool="fixed" threads="20" port="28880" />
+
+	<!-- app用户 -->
+	<dubbo:reference id="appUserService"
+		interface="com.lovecws.car.user.i.AppUserService" />
+
+	<!-- 商铺用户 -->
+	<dubbo:reference id="merchantUserService"
+		interface="com.lovecws.car.user.i.MerchantUserService" />
+</beans>
